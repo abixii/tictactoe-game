@@ -1,4 +1,5 @@
 import Square from './Square';
+import React from 'react';
 
 const Booard = ({ squares, handleSquareClick }) => {
   const renderSquare = position => {
