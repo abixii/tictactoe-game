@@ -5,15 +5,15 @@ import StatusMessage from './components/StatusMessage';
 import History from './components/History';
 import { calculateWinner } from './winner';
 
-function App() {
-  const [history, setHistory] = useState([
-    { squares: Array(9).fill(null), isXNext: false },
-  ]);
+const NEW_GAME = [{ squares: Array(9).fill(null), isXNext: false }];
 
+function App() {
+  const [history, setHistory] = useState(NEW_GAME);
   const [currentMove, setCurrentMove] = useState(0);
+
   const gamingBoard = history[currentMove];
 
-  const winner = calculateWinner(gamingBoard.squares);
+  const { winner, winningSquares } = calculateWinner(gamingBoard.squares);
 
   const handleSquareClick = clickedPosition => {
     if (gamingBoard.squares[clickedPosition] || winner) {
@@ -52,6 +52,10 @@ function App() {
   const moveTo = move => {
     setCurrentMove(move);
   };
+  const OnNewGameStart = () => {
+    setHistory(NEW_GAME);
+    setCurrentMove(0);
+  };
 
   return (
     <div className="app">
@@ -59,10 +63,18 @@ function App() {
       <Booard
         squares={gamingBoard.squares}
         handleSquareClick={handleSquareClick}
+        winningSquares={winningSquares}
       />
 
-      <h2>History</h2>
+      <button
+        type="button"
+        onClick={OnNewGameStart}
+        className={`btn-reset ${winner ? 'active' : ''}`}
+      >
+        Start new game
+      </button>
 
+      <h2>History</h2>
       <History history={history} moveTo={moveTo} currentMove={currentMove} />
       <h2>Abixii</h2>
     </div>
